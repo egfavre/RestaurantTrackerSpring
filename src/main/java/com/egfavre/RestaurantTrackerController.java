@@ -2,10 +2,13 @@ package com.egfavre;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by user on 6/21/16.
@@ -18,14 +21,22 @@ public class RestaurantTrackerController {
     RestaurantRepository restaurants;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String home(HttpSession session) {
+    public String home(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
         if (username == null) {
             return "login";
         } else {
+            Iterable<Restaurant> rests = restaurants.findAll();
+            model.addAttribute("restaurants", rests);
             return "home";
         }
     }
+    @RequestMapping(path = "delete-restaurant", method = RequestMethod.POST)
+        public String delete(int id){
+        restaurants.delete(id);
+        return "redirect:/";
+    }
+
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(String username, String password, HttpSession session) throws Exception {
