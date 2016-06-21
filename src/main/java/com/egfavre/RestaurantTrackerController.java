@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 public class RestaurantTrackerController {
     @Autowired
     UserRepository users;
+    @Autowired
+    RestaurantRepository restaurants;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(HttpSession session) {
@@ -27,7 +29,7 @@ public class RestaurantTrackerController {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(String username, String password, HttpSession session) throws Exception {
-        User user = users.findByUsername(username);
+        User user = users.findByName(username);
         if (user == null){
             user = new User(username, password);
             users.save(user);
@@ -36,6 +38,19 @@ public class RestaurantTrackerController {
             throw new Exception("wrong password");
         }
         session.setAttribute("username", username);
+        return "redirect:/";
+    }
+
+    @RequestMapping(path = "logout", method = RequestMethod.POST)
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    @RequestMapping(path = "create-restaurant", method = RequestMethod.POST)
+    public String create(String name, String location, int rating, String comment){
+        Restaurant r = new Restaurant(name, location, rating, comment);
+        restaurants.save(r);
         return "redirect:/";
     }
 }

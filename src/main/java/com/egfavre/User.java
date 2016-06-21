@@ -22,4 +22,7 @@ public class User {
         this.name = name;
         this.password = password;
     }
+
+    public User() {
+    }
 }
