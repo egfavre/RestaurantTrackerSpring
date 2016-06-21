@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RestaurantTrackerDB</title>
+    <title>Restaruant Tracker</title>
 </head>
 <body>
-
-<form action="/addRestaurant" method="post">
-    <input type="hidden" name="id" value="">
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+<br>
+<form action="/create-restaurant" method="post">
     <input type="text" name="name" placeholder="Name"/>
     <input type="text" name="location" placeholder="Location"/>
     <select name="rating">
@@ -20,6 +22,16 @@
     <input type="text" name="comment" placeholder="Comment"/>
     <button type="submit">Submit Restaurant</button>
 </form>
-
+<br>
+<form action="/delete-restaurant" method="post">
+    <input type="number" name="id" placeholder="#"/>
+    <button type="submit">Delete Restaurant</button>
+</form>
+<br>
+<ol>
+    {{#restaurants}}
+    <li><b>{{name}}</b> - {{location}} - {{rating}}/5 - {{comment}}</li>
+    {{/restaurants}}
+</ol>
 </body>
 </html>
